@@ -136,18 +136,34 @@ class GenStrings {
 
 }
 
+func pathExistsAndIsDirectory(_ path: String) -> Bool {
+    var isDir: ObjCBool = false
+    if FileManager.default.fileExists(atPath: path, isDirectory: &isDir) {
+        if isDir.boolValue {
+            return true
+        }
+    }
+    
+    return false
+}
+
 //let startTime = Date().timeIntervalSince1970
 let genStrings = GenStrings()
 var languages: Set<String> = ["en"]
-if CommandLine.arguments.count > 1 {
-    let path = CommandLine.arguments[1]
+let path = CommandLine.arguments.last!
+if pathExistsAndIsDirectory(path) {
     if CommandLine.arguments.count > 2 {
-        for i in 2..<CommandLine.arguments.count {
+        for i in 1..<CommandLine.arguments.count - 1 {
             languages.insert(CommandLine.arguments[i])
         }
     }
     genStrings.perform(languages: Array(languages), path: path)
 } else {
+    if CommandLine.arguments.count > 1 {
+        for i in 1..<CommandLine.arguments.count {
+            languages.insert(CommandLine.arguments[i])
+        }
+    }
     genStrings.perform(languages: Array(languages))
 }
 //print("Finished in \(Date().timeIntervalSince1970 - startTime) seconds")
