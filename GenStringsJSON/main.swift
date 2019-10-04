@@ -27,34 +27,74 @@ class GenStrings {
     func perform(languages: [String], path: String? = nil) {
         let directoryPath = path ?? fileManager.currentDirectoryPath
         let rootPath = URL(fileURLWithPath:directoryPath)
+        let loadedJson = loadJsonIfExists(at: rootPath)
+        var localizableStrings = Set<String>()
+        var jsonKeys = [String]()
+        if let keys = loadedJson?.keys {
+            jsonKeys.append(contentsOf: keys)
+            for key in keys {
+                localizableStrings.insert(key)
+            }
+        }
         let allFiles = fetchFilesInFolder(rootPath: rootPath)
         // We use a set to avoid duplicates
-        var localizableStrings = Set<String>()
         for filePath in allFiles {
             let stringsInFile = localizableStringsInFile(filePath: filePath)
             localizableStrings = localizableStrings.union(stringsInFile)
         }
         // We sort the strings
         let sortedStrings = localizableStrings.sorted(by: { $0 < $1 })
-        var processedStrings = String()
-        processedStrings.append("{\n")
-        for (sIndex, string) in sortedStrings.enumerated() {
-            processedStrings.append("  \"\(string)\": {\n")
-            for (index, language) in languages.enumerated() {
-                processedStrings.append("    \"\(language)\": \"\(string)\"")
-                if index < languages.count - 1 {
-                    processedStrings.append(",")
+        var processedJson: [String: Any] = [:]
+        for string in sortedStrings {
+            if jsonKeys.contains(string) {
+                processedJson[string] = loadedJson![string]
+            } else {
+                var value: [String: String] = [:]
+                for language in languages {
+                    value[language] = string
                 }
-                processedStrings.append("\n")
+                processedJson[string] = value
             }
-            processedStrings.append("  }")
-            if sIndex < sortedStrings.count - 1 {
-                processedStrings.append(",")
-            }
-            processedStrings.append("\n")
         }
-        processedStrings.append("}\n")
-        print(processedStrings)
+        // Write out Localizable.json
+        writeJsonString(JSONStringify(value: processedJson as AnyObject, prettyPrinted: true), to: rootPath)
+    }
+    
+    func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
+        let options: JSONSerialization.WritingOptions = prettyPrinted ? [.prettyPrinted, .sortedKeys] : []
+        if JSONSerialization.isValidJSONObject(value) {
+            do {
+                let data = try JSONSerialization.data(withJSONObject: value, options: options)
+                if let string = String(data: data, encoding: .utf8) {
+                    return string
+                }
+            } catch {
+                return ""
+            }
+        }
+        return ""
+    }
+    
+    func loadJsonIfExists(at path: URL) -> [String: Any]? {
+        let fileURL = path.appendingPathComponent("Localizable.json")
+        if !fileManager.fileExists(atPath: fileURL.path) {
+            return nil
+        }
+
+        guard let jsonData = try? Data(contentsOf: fileURL) else { return nil }
+        guard let json = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else { return nil }
+
+        return json
+    }
+    
+    @discardableResult func writeJsonString(_ jsonString: String, to path: URL) -> Bool {
+        let fileURL = path.appendingPathComponent("Localizable.json")
+        do {
+            try jsonString.write(to: fileURL, atomically: false, encoding: .utf8)
+            return true
+        } catch {
+            return false
+        }
     }
 
     // Applies regex to a file at filePath.
