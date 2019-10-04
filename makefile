@@ -16,6 +16,7 @@ LICENSE_PATH="$(shell pwd)/LICENSE"
 all: build
 
 clean:
+	rm -rf "$(BUILD_FOLDER)"
 	rm -rf "$(TEMPORARY_FOLDER)"
 	rm -f "./portable_LocalizableJSON.zip"
 
