@@ -64,7 +64,11 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "/Users/csabagyarmati/iOSProjects/mobiljegy-ios/Mobiljegy"
+            argument = "--path /Users/ali/iCell/nejp-account-ios/NEJP"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--remove-unused"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
