@@ -7,10 +7,15 @@
 //
 
 import Foundation
+import ArgumentParser
+
+struct CommandLineSwitches {
+    var removeUnusedEntries: Bool
+}
 
 class GenStrings {
 
-    var str = "Hello, playground"
+    let commandLineSwitches: CommandLineSwitches
     let fileManager = FileManager.default
     let acceptedFileExtensions = ["swift"]
     let excludedFolderNames = ["Carthage"]
@@ -23,6 +28,10 @@ class GenStrings {
         case Error
     }
 
+    init(commandLineSwitches: CommandLineSwitches) {
+        self.commandLineSwitches = commandLineSwitches
+    }
+    
     // Performs the genstrings functionality
     func perform(languages: [String], path: String? = nil) {
         let directoryPath = path ?? fileManager.currentDirectoryPath
@@ -38,16 +47,20 @@ class GenStrings {
         }
         let allFiles = fetchFilesInFolder(rootPath: rootPath)
         // We use a set to avoid duplicates
+        var retrievedKeys = Set<String>()
         for filePath in allFiles {
             let stringsInFile = localizableStringsInFile(filePath: filePath)
             localizableStrings = localizableStrings.union(stringsInFile)
+            retrievedKeys = retrievedKeys.union(stringsInFile)
         }
         // We sort the strings
         let sortedStrings = localizableStrings.sorted(by: { $0 < $1 })
         var processedJson: [String: Any] = [:]
         for string in sortedStrings {
             if jsonKeys.contains(string) {
-                processedJson[string] = loadedJson![string]
+                if retrievedKeys.contains(string) || !commandLineSwitches.removeUnusedEntries {
+                    processedJson[string] = loadedJson![string]
+                }
             } else {
                 var value: [String: String] = [:]
                 for language in languages {
@@ -187,23 +200,20 @@ func pathExistsAndIsDirectory(_ path: String) -> Bool {
     return false
 }
 
-//let startTime = Date().timeIntervalSince1970
-let genStrings = GenStrings()
-var languages: Set<String> = ["en"]
-let path = CommandLine.arguments.last!
-if pathExistsAndIsDirectory(path) {
-    if CommandLine.arguments.count > 2 {
-        for i in 1..<CommandLine.arguments.count - 1 {
-            languages.insert(CommandLine.arguments[i])
-        }
+struct GenStringJSON: ParsableCommand {
+    @Flag(help: "Remove all unused localization keys from Localized.json after generation.")
+    var removeUnused = false
+    
+    @Option(help: "Root path of project localization keys collecting from.")
+    var path: String?
+    
+    @Argument(help: "Specify language local codes which will be presented in Localizable.json. The default value is en if there is nothing specified.")
+    var languages: [String] = []
+    
+    func run() throws {
+        let genStrings = GenStrings(commandLineSwitches: CommandLineSwitches(removeUnusedEntries: removeUnused))
+        genStrings.perform(languages: languages, path: path)
     }
-    genStrings.perform(languages: Array(languages), path: path)
-} else {
-    if CommandLine.arguments.count > 1 {
-        for i in 1..<CommandLine.arguments.count {
-            languages.insert(CommandLine.arguments[i])
-        }
-    }
-    genStrings.perform(languages: Array(languages))
 }
-//print("Finished in \(Date().timeIntervalSince1970 - startTime) seconds")
+
+GenStringJSON.main()
