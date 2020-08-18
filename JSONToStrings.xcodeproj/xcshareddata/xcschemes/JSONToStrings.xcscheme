@@ -52,8 +52,12 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "/Users/csabagyarmati/iOSProjects/jsontest"
+            argument = "--path ./"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--help"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
