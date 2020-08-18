@@ -48,7 +48,7 @@ let text = "boxStorage.hint.title".localizedPlural(numberOfBoxes)
 
 ## GenStringsJSON
 
-```ruby
+```bash
 USAGE: GenStringsJSON [--path <path>] [--remove-unused] [<language codes> ...]
 
 ARGUMENTS:
@@ -67,7 +67,7 @@ OPTIONS:
 ```
 ## JSONToStrings
 
-```ruby
+```bash
 USAGE: JSONToStrings --path <path>
 
 OPTIONS:
