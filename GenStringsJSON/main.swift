@@ -207,7 +207,7 @@ struct GenStringJSON: ParsableCommand {
                                                     discussion: "Default is the current folder."))
     var path: String?
     
-    @Flag(name: .shortAndLong, help: ArgumentHelp("Remove all unused localization keys from Localized.json after generation.",
+    @Flag(name: .shortAndLong, help: ArgumentHelp("Remove all unused localization keys from Localizable.json after generation.",
                                                   discussion: "Default value is false."))
     var removeUnused = false
     
