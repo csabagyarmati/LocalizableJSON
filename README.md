@@ -3,8 +3,8 @@
 [![License](https://img.shields.io/cocoapods/l/LocalizableJSON.svg?style=flat)](https://cocoapods.org/pods/LocalizableJSON)
 [![Platform](https://img.shields.io/cocoapods/p/LocalizableJSON.svg?style=flat)](https://cocoapods.org/pods/LocalizableJSON)
 
-Generate a file called Localized.json from the source code containing all the keys of localized strings.
-Generate Localized.strings and Localized.stringsdict from Localized.json.
+Generate a file called Localizable.json from the source code containing all the keys of localized strings.
+Generate Localizable.strings and Localizable.stringsdict from Localizable.json.
 
 ## Installation
 
@@ -26,7 +26,7 @@ ${PODS_ROOT}/LocalizableJSON/JSONToStrings --path ${SRCROOT}/Your-project-dir
 
 ## Generation strategy
 
-Localized.json generated from the source code, based on localization related functions. Check the following source code to unerstand it.
+Localizable.json generated from the source code, based on localization related functions. Check the following source code to understand it.
 ```swift
 // When using standard localization method
 
@@ -48,24 +48,30 @@ let text = "boxStorage.hint.title".localizedPlural(numberOfBoxes)
 
 ## GenStringsJSON
 
-### Command line switches
+```ruby
+USAGE: GenStringsJSON [--path <path>] [--remove-unused] [<language codes> ...]
 
-#### --path
+ARGUMENTS:
+  <language codes>        Specify language local codes which will be presented
+                          in Localizable.json. 
+        The default value is "en" if there is nothing specified.
 
-Root directory of your project.
-
-#### --remove-unused
-
-Remove unused keys from Localizable.json during generation.
-
-#### --language
-
-An array of generating locale codes separated with spaces. This switch is optional.
-
+OPTIONS:
+  -p, --path <path>       Root path of project localization keys collecting
+                          from. 
+        Default is the current folder.
+  -r, --remove-unused     Remove all unused localization keys from
+                          Localized.json after generation. 
+        Default value is false.
+  -h, --help              Show help information.
+```
 ## JSONToStrings
 
-### Command line switches
+```ruby
+USAGE: JSONToStrings --path <path>
 
-#### --path
-
-Root directory of your project.
+OPTIONS:
+  -p, --path <path>       Path of Localizable.json and target path of
+                          Localizable.strings files. 
+  -h, --help              Show help information.
+ ```
