@@ -12,6 +12,7 @@ XCODEFLAGS_JSONTOSTRINGS=-project 'JSONToStrings.xcodeproj' \
 
 BINARIES_FOLDER=/usr/local/bin
 LICENSE_PATH="$(shell pwd)/LICENSE"
+README_PATH="$(shell pwd)/README.md"
 
 all: build
 
@@ -42,7 +43,8 @@ portable_zip: installables
 	cp -f "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/GenStringsJSON" "$(TEMPORARY_FOLDER)"
 	cp -f "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/JSONToStrings" "$(TEMPORARY_FOLDER)"
 	cp -f "$(LICENSE_PATH)" "$(TEMPORARY_FOLDER)"
-	(cd "$(TEMPORARY_FOLDER)"; zip -yr - "GenStringsJSON" "JSONToStrings" "LICENSE") > "./portable_LocalizableJSON.zip"
+	cp -f "$(README_PATH)" "$(TEMPORARY_FOLDER)"
+	(cd "$(TEMPORARY_FOLDER)"; zip -yr - "GenStringsJSON" "JSONToStrings" "LICENSE" "README.md") > "./portable_LocalizableJSON.zip"
 
 release: portable_zip
 
