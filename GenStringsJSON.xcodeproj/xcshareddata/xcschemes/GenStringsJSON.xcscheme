@@ -53,22 +53,26 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "en"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "hu"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "de"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--path /Users/ali/iCell/nejp-account-ios/NEJP"
-            isEnabled = "YES">
+            argument = "--path ./"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--remove-unused"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--help"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

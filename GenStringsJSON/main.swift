@@ -201,13 +201,19 @@ func pathExistsAndIsDirectory(_ path: String) -> Bool {
 }
 
 struct GenStringJSON: ParsableCommand {
-    @Flag(help: "Remove all unused localization keys from Localized.json after generation.")
-    var removeUnused = false
+    static var configuration = CommandConfiguration(commandName: "GenStringsJSON")
     
-    @Option(help: "Root path of project localization keys collecting from.")
+    @Option(name: .shortAndLong, help: ArgumentHelp("Root path of project localization keys collecting from.",
+                                                    discussion: "Default is the current folder."))
     var path: String?
     
-    @Argument(help: "Specify language local codes which will be presented in Localizable.json. The default value is en if there is nothing specified.")
+    @Flag(name: .shortAndLong, help: ArgumentHelp("Remove all unused localization keys from Localized.json after generation.",
+                                                  discussion: "Default value is false."))
+    var removeUnused = false
+    
+    @Argument(help: ArgumentHelp("Specify language local codes which will be presented in Localizable.json.",
+                                 discussion: "The default value is \"en\" if there is nothing specified.",
+                                 valueName: "language codes"))
     var languages: [String] = []
     
     func run() throws {
