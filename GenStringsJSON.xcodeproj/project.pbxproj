@@ -94,7 +94,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1160;
 				ORGANIZATIONNAME = "Csaba Gyarmati";
 				TargetAttributes = {
 					53AF63F3233E948500C9C0FC = {
@@ -251,6 +251,7 @@
 		53AF63FC233E948600C9C0FC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D9M952UW92;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -262,6 +263,7 @@
 		53AF63FD233E948600C9C0FC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D9M952UW92;
 				ENABLE_HARDENED_RUNTIME = YES;
