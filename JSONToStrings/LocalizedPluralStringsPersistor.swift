@@ -48,12 +48,27 @@ extension LocalizedPluralArgs {
 }
 
 extension String {
+    
     func escaping() -> String {
         let scalars = self.unicodeScalars
         var escapedValue = ""
         for scalar in scalars {
-            escapedValue += scalar.escaped(asASCII: false)
+            escapedValue += scalar.fixEscapedCharacter()
         }
         return escapedValue
     }
+    
+}
+
+extension Unicode.Scalar {
+    
+    func fixEscapedCharacter() -> String {
+        let source: [Unicode.Scalar] = ["\n", "\r", "\t", "\\", "\"", "'"]
+        let target: [Unicode.Scalar] = ["\u{a}", "\u{d}", "\u{9}", "\u{5c}", "\u{22}", "\u{27}"]
+        for (index, char) in source.enumerated() {
+            if self == char { return String(target[index]) }
+        }
+        return self.escaped(asASCII: false)
+    }
+    
 }
