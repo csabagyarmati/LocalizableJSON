@@ -22,6 +22,9 @@ struct JsonToStrings: ParsableCommand {
     
     @Option(name: .shortAndLong, help: "Path of Localizable.json and target path of Localizable.strings files.")
     var path: String
+    
+    @Flag(name: .shortAndLong, help: "Generate keys swift file.")
+    var generateKeys: Bool = false
 
     func run() throws {
         let args = try validateArgs()
@@ -53,7 +56,7 @@ struct JsonToStrings: ParsableCommand {
             throw RuntimeError("Serialization error at processing Localizable.json")
         }
         
-        return GeneratorArguments(json: json, dirUrl: dirURL)
+        return GeneratorArguments(json: json, dirUrl: dirURL, generateKeys: generateKeys)
     }
 }
 

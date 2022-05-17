@@ -11,6 +11,7 @@ import Foundation
 struct GeneratorArguments {
     var json: [String: Any]
     var dirUrl: URL
+    var generateKeys: Bool
 }
 
 class LocalizedStringsGenerator {
@@ -27,5 +28,10 @@ class LocalizedStringsGenerator {
         
         LocalizedStringsPresistor.save(result.localizedStrings, into: args.dirUrl)
         LocalizedPluralStringsPersistor.save(result.localizedPlurals, into: args.dirUrl)
+        
+        if args.generateKeys {
+            let keyGenerator = KeyGenerator(stringKeys: result.localizedStrings.allKeys, dirURL: args.dirUrl)
+            keyGenerator.generateKeys()
+        }
     }
 }
