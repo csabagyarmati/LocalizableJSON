@@ -2,13 +2,14 @@ TEMPORARY_FOLDER?=/tmp/LocalizableJSON.dst
 BUILD_FOLDER?=build
 PREFIX?=/usr/local
 BUILD_TOOL?=xcodebuild
+RELEASE_FOLDER?=Build/Products/Release
 
 XCODEFLAGS_GENSTRINGSJSON=-project 'GenStringsJSON.xcodeproj' \
-	-target 'GenStringsJSON' \
-	-configuration Release
+	-scheme 'GenStringsJSON' \
+	-derivedDataPath '$(BUILD_FOLDER)'
 XCODEFLAGS_JSONTOSTRINGS=-project 'JSONToStrings.xcodeproj' \
-	-target 'JSONToStrings' \
-	-configuration Release
+	-scheme 'JSONToStrings' \
+	-derivedDataPath '$(BUILD_FOLDER)'
 
 BINARIES_FOLDER=/usr/local/bin
 LICENSE_PATH="$(shell pwd)/LICENSE"
@@ -27,8 +28,8 @@ build:
 
 install: build
 	install -d "$(BINARIES_FOLDER)"
-	install "$(BUILD_FOLDER)/Release/GenStringsJSON" "$(BINARIES_FOLDER)"
-	install "$(BUILD_FOLDER)/Release/JSONToStrings" "$(BINARIES_FOLDER)"
+	install "$(BUILD_FOLDER)/$(RELEASE_FOLDER)/GenStringsJSON" "$(BINARIES_FOLDER)"
+	install "$(BUILD_FOLDER)/$(RELEASE_FOLDER)/JSONToStrings" "$(BINARIES_FOLDER)"
 
 uninstall:
 	rm -f "$(BINARIES_FOLDER)/GenStringsJSON"
@@ -36,8 +37,8 @@ uninstall:
 
 installables: build
 	install -d "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
-	install "$(BUILD_FOLDER)/Release/GenStringsJSON" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
-	install "$(BUILD_FOLDER)/Release/JSONToStrings" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
+	install "$(BUILD_FOLDER)/$(RELEASE_FOLDER)/GenStringsJSON" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
+	install "$(BUILD_FOLDER)/$(RELEASE_FOLDER)/JSONToStrings" "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)"
 
 portable_zip: installables
 	cp -f "$(TEMPORARY_FOLDER)$(BINARIES_FOLDER)/GenStringsJSON" "$(TEMPORARY_FOLDER)"
