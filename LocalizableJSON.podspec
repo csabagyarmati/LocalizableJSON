@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name           = 'LocalizableJSON'
-  s.version        = '2.2.0'
+  s.version        = '2.2.1'
   s.summary        = 'A tool to generate localizable JSON file and compile to strings.'
   s.homepage       = 'https://github.com/csabagyarmati/LocalizableJSON'
   s.license        = { type: 'GNU', file: 'LICENSE' }

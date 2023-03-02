@@ -56,7 +56,7 @@ class KeyGenerator {
     }
     
     private func saveKeys(into dirURL: URL) {
-        var stringFile = "// Generated from Localizable.json\n\nimport Foundation\n\nstruct L {\n"
+        var stringFile = "// Generated from Localizable.json\n\nimport Foundation\n\n// swiftlint:disable all\nstruct L {\n"
         stringFile += createLine(from: localizationKeys, indent: 4)
         stringFile += "}\n"
 
